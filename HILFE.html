@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vollständige Bedienhilfe für den Rapport Generator: Kalender verbinden, Rapporte erstellen, Einstellungen verwalten und Fehler beheben.">
+  <title>Hilfe – Rapport Generator</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17243b;
+      --muted: #5c6a80;
+      --subtle: #8390a3;
+      --paper: #ffffff;
+      --canvas: #f3f6fb;
+      --line: #dce4ef;
+      --blue: #1769c2;
+      --blue-dark: #124f91;
+      --blue-soft: #eaf3ff;
+      --teal: #087f8c;
+      --green: #168056;
+      --amber: #946000;
+      --shadow: 0 18px 48px rgba(24, 48, 79, .09);
+      --radius: 18px;
+      font-family: "Segoe UI", "Aptos", system-ui, -apple-system, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    body { margin: 0; color: var(--ink); background: var(--canvas); line-height: 1.65; }
+    a { color: var(--blue-dark); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { color: var(--blue); }
+    button, input { font: inherit; }
+    code, pre, .mono { font-family: Consolas, "Cascadia Code", "Courier New", monospace; }
+    code { color: #173f70; background: #edf3fa; padding: .12em .38em; border-radius: 5px; font-size: .92em; }
+    .layout { min-height: 100vh; }
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; z-index: 5; width: 286px; padding: 25px 18px 22px;
+      overflow-y: auto; background: #fbfcfe; border-right: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 4px 9px 22px; }
+    .brand-logo {
+      display: block; width: 42px; height: 42px; flex: none; object-fit: contain; border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(23,105,194,.18);
+    }
+    .brand strong { display: block; line-height: 1.2; font-size: 15px; }
+    .brand small { display: block; color: var(--muted); margin-top: 4px; font-size: 12px; }
+    .search-wrap { position: relative; margin: 0 4px 20px; }
+    .search-wrap input {
+      width: 100%; padding: 11px 12px 11px 36px; color: var(--ink); background: white;
+      border: 1px solid var(--line); border-radius: 11px; outline: none;
+    }
+    .search-wrap input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(23,105,194,.13); }
+    .search-icon { position: absolute; left: 12px; top: 8px; color: var(--subtle); font-size: 17px; pointer-events: none; }
+    .nav-caption { margin: 0 10px 8px; color: var(--subtle); font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    nav { display: grid; gap: 3px; }
+    nav a {
+      display: flex; gap: 10px; align-items: center; padding: 8px 10px; color: #40516b;
+      text-decoration: none; font-size: 13px; border-radius: 9px; transition: background .15s, color .15s;
+    }
+    nav a:hover { color: var(--blue-dark); background: #edf4fc; }
+    nav a.active { color: #104f91; font-weight: 700; background: var(--blue-soft); }
+    nav .num { width: 20px; color: #8b9bb0; font-size: 11px; font-variant-numeric: tabular-nums; }
+    .side-note { margin: 23px 5px 0; padding: 12px; color: var(--muted); background: #f0f4f9; border-radius: 12px; font-size: 11px; }
+    main { width: min(1120px, calc(100% - 334px)); margin: 0 auto 0 316px; padding: 34px 26px 76px; }
+    .topline { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; color: var(--muted); font-size: 12px; }
+    .topline .badge { display: inline-flex; align-items: center; gap: 7px; padding: 6px 10px; background: white; border: 1px solid var(--line); border-radius: 999px; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #26a269; box-shadow: 0 0 0 3px #e4f6ed; }
+    .hero {
+      position: relative; overflow: hidden; padding: clamp(27px, 5vw, 54px); color: white;
+      background: radial-gradient(circle at 86% 8%, rgba(121,207,255,.37), transparent 28%), linear-gradient(125deg, #143d69 0%, #1769b0 58%, #167b91 100%);
+      border-radius: 25px; box-shadow: var(--shadow);
+    }
+    .hero::after { content: ""; position: absolute; width: 250px; height: 250px; right: -94px; bottom: -165px; border: 1px solid rgba(255,255,255,.2); border-radius: 50%; box-shadow: 0 0 0 26px rgba(255,255,255,.04), 0 0 0 55px rgba(255,255,255,.035); }
+    .eyebrow { color: #bee4ff; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { max-width: 700px; margin: 12px 0 12px; font-size: clamp(34px, 5.4vw, 56px); letter-spacing: -.045em; line-height: 1.08; }
+    .hero p { max-width: 680px; margin: 0; color: rgba(255,255,255,.87); font-size: 17px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .button-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 15px; color: #123e68; background: white; border-radius: 10px; font-size: 13px; font-weight: 750; text-decoration: none; }
+    .button-link.secondary { color: white; background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.27); }
+    .button-link:hover { transform: translateY(-1px); }
+    .intro-grid { display: grid; grid-template-columns: 1.35fr .85fr; gap: 18px; margin: 20px 0 30px; }
+    .card, .doc-section { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 7px 22px rgba(28,49,77,.04); }
+    .card { padding: 21px; }
+    .card h2, .card h3 { margin: 0 0 8px; }
+    .card p { margin: 0; color: var(--muted); }
+    .workflow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; margin-top: 18px; }
+    .workflow-step { position: relative; min-height: 105px; padding: 12px 10px; background: #f5f8fc; border: 1px solid #e7edf5; border-radius: 12px; }
+    .workflow-step b { display: grid; place-items: center; width: 25px; height: 25px; margin-bottom: 8px; color: white; background: var(--blue); border-radius: 8px; font-size: 12px; }
+    .workflow-step strong { display: block; font-size: 12px; line-height: 1.35; }
+    .workflow-step span { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+    .info-points { display: grid; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .info-points li { display: flex; gap: 9px; color: var(--muted); font-size: 13px; }
+    .check { color: var(--green); font-weight: 800; }
+    .doc-section { margin-top: 20px; padding: clamp(22px, 3vw, 34px); scroll-margin-top: 22px; }
+    .section-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 18px; }
+    .section-num { display: grid; place-items: center; width: 36px; height: 36px; flex: none; color: var(--blue-dark); background: var(--blue-soft); border-radius: 11px; font-size: 13px; font-weight: 800; }
+    h2 { margin: 0; font-size: clamp(22px, 3vw, 29px); letter-spacing: -.025em; line-height: 1.2; }
+    h3 { margin: 24px 0 8px; font-size: 17px; letter-spacing: -.01em; }
+    h4 { margin: 16px 0 6px; font-size: 14px; }
+    .section-head p { margin: 5px 0 0; color: var(--muted); font-size: 14px; }
+    p { margin: 10px 0; }
+    .lead { max-width: 850px; color: var(--muted); }
+    .cols { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; margin: 16px 0; }
+    .mini-card { padding: 16px; background: #f7f9fc; border: 1px solid #e7edf5; border-radius: 13px; }
+    .mini-card h3, .mini-card h4 { margin-top: 0; }
+    .mini-card p:last-child { margin-bottom: 0; }
+    .mini-card p, .mini-card li { color: var(--muted); font-size: 13px; }
+    ul, ol { padding-left: 23px; }
+    li { margin: 5px 0; }
+    .callout { margin: 16px 0; padding: 14px 16px; color: #38516e; background: #eff6ff; border: 1px solid #d7e8fb; border-left: 4px solid var(--blue); border-radius: 11px; }
+    .callout.warning { color: #674b16; background: #fff8e9; border-color: #f4e2b8; border-left-color: #d99b22; }
+    .callout.success { color: #245641; background: #edf8f1; border-color: #d5eddf; border-left-color: var(--green); }
+    .callout strong { color: var(--ink); }
+    .steps-list { counter-reset: guide; display: grid; gap: 10px; margin: 16px 0; padding: 0; list-style: none; }
+    .steps-list li { counter-increment: guide; display: grid; grid-template-columns: 30px 1fr; gap: 11px; margin: 0; padding: 12px; background: #f8fafd; border: 1px solid #e8eef5; border-radius: 12px; }
+    .steps-list li::before { content: counter(guide); display: grid; place-items: center; width: 26px; height: 26px; color: white; background: var(--blue); border-radius: 8px; font-size: 12px; font-weight: 800; }
+    .steps-list p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+    .key-sequence { display: flex; flex-wrap: wrap; gap: 6px; margin: 11px 0; }
+    kbd { display: inline-block; padding: 4px 8px; color: #233953; background: #f7f9fc; border: 1px solid #cbd6e3; border-bottom-width: 2px; border-radius: 6px; font: 12px Consolas, monospace; }
+    .table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; min-width: 520px; }
+    th, td { padding: 11px 13px; border-bottom: 1px solid #e7edf4; text-align: left; vertical-align: top; font-size: 13px; }
+    th { color: #3b4f69; background: #f5f8fc; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    .pill { display: inline-block; padding: 3px 8px; color: var(--blue-dark); background: var(--blue-soft); border-radius: 999px; font-size: 11px; font-weight: 750; }
+    .subject-demo { overflow-x: auto; margin: 14px 0; padding: 17px; color: #e7f2ff; background: #122940; border-radius: 13px; font: 13px/1.85 Consolas, monospace; white-space: nowrap; }
+    .subject-demo .customer { color: #76c1ff; }
+    .subject-demo .work { color: #9fe0c2; }
+    .subject-demo .detail { color: #ffd17c; }
+    .subject-demo .material { color: #e4b7ff; }
+    .keyboard { display: grid; grid-template-columns: 130px 1fr; gap: 8px 14px; align-items: start; padding: 15px; background: #f7f9fc; border: 1px solid #e6edf5; border-radius: 13px; }
+    .keyboard strong { color: #304b6d; font-size: 12px; }
+    .keyboard span { color: var(--muted); font-size: 13px; }
+    details { margin: 9px 0; padding: 12px 14px; background: #fafbfd; border: 1px solid #e3eaf2; border-radius: 11px; }
+    summary { cursor: pointer; color: #244363; font-weight: 750; }
+    details p, details ul { color: var(--muted); font-size: 13px; }
+    .footer { display: flex; justify-content: space-between; gap: 14px; margin-top: 22px; padding: 16px 4px; color: var(--muted); font-size: 12px; }
+    .no-results { display: none; margin: 12px 8px; color: var(--muted); font-size: 12px; }
+    .hidden { display: none !important; }
+    @media (max-width: 1060px) {
+      .sidebar { width: 245px; }
+      main { width: calc(100% - 275px); margin-left: 265px; padding-inline: 20px; }
+      .workflow { grid-template-columns: repeat(5, minmax(90px,1fr)); }
+    }
+    @media (max-width: 760px) {
+      .sidebar { position: sticky; inset: 0 0 auto; width: 100%; max-height: 250px; padding: 12px 14px 10px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .brand { padding: 0 3px 10px; }
+      .brand-logo { width: 35px; height: 35px; border-radius: 9px; }
+      .search-wrap { margin: 0 2px 10px; }
+      .search-wrap input { padding-block: 8px; }
+      .search-icon { top: 5px; }
+      .nav-caption, .side-note { display: none; }
+      nav { display: flex; overflow-x: auto; gap: 4px; padding-bottom: 2px; }
+      nav a { flex: none; padding: 7px 9px; font-size: 12px; }
+      nav .num { display: none; }
+      main { width: 100%; margin: 0; padding: 20px 14px 48px; }
+      .topline { margin-bottom: 12px; }
+      .intro-grid, .cols { grid-template-columns: 1fr; }
+      .workflow { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .workflow-step:last-child { grid-column: 1 / -1; min-height: auto; }
+      .doc-section { padding: 21px 17px; }
+    }
+    @media (max-width: 430px) {
+      .hero { padding: 25px 21px; border-radius: 19px; }
+      .hero p { font-size: 15px; }
+      .topline { align-items: flex-start; flex-direction: column; }
+      .keyboard { grid-template-columns: 1fr; gap: 3px; }
+      .keyboard span { margin-bottom: 8px; }
+    }
+    @media print {
+      body { background: white; }
+      .sidebar, .topline, .hero-actions, .footer { display: none !important; }
+      main { width: 100%; margin: 0; padding: 0; }
+      .hero { padding: 25px; color: #123; background: #eef4fa; box-shadow: none; }
+      .hero p, .eyebrow { color: #456; }
+      .doc-section, .card { break-inside: avoid; box-shadow: none; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" aria-label="Hilfe-Navigation">
+    <div class="brand">
+      <img class="brand-logo" src="data:image/png;base64,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" alt="Rapport Generator Logo">
+      <div><strong>Rapport Generator</strong><small>Hilfe &amp; Bedienung</small></div>
+    </div>
+    <label class="search-wrap">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input id="help-search" type="search" placeholder="Hilfe durchsuchen …" aria-label="Hilfe durchsuchen">
+    </label>
+    <div class="nav-caption">Themen</div>
+    <nav id="help-nav">
+      <a href="#start"><span class="num">00</span> Überblick</a>
+      <a href="#erste-schritte"><span class="num">01</span> Erste Schritte</a>
+      <a href="#kalender"><span class="num">02</span> Kalender verbinden</a>
+      <a href="#workflow"><span class="num">03</span> Rapporte erstellen</a>
+      <a href="#kunden"><span class="num">04</span> Kunden auswählen</a>
+      <a href="#betreff"><span class="num">05</span> Terminbetreff verstehen</a>
+      <a href="#abrechnung"><span class="num">06</span> Berechnung &amp; PDF</a>
+      <a href="#einstellungen"><span class="num">07</span> Einstellungen</a>
+      <a href="#sichern"><span class="num">08</span> Export &amp; Deinstallation</a>
+      <a href="#updates"><span class="num">09</span> Updates</a>
+      <a href="#protokoll"><span class="num">10</span> Protokoll &amp; Debug</a>
+      <a href="#probleme"><span class="num">11</span> Fehlerbehebung</a>
+    </nav>
+    <p class="no-results" id="no-results">Kein passendes Thema gefunden.</p>
+    <div class="side-note">Tipp: Mit der Suche werden passende Themen direkt in der Navigation gefiltert.</div>
+  </aside>
+
+  <main>
+    <div class="topline">
+      <span>Bedienhilfe · Deutsch</span>
+      <span class="badge"><span class="dot"></span> Stand: aktuelle Bedienoberfläche</span>
+    </div>
+
+    <header class="hero doc-section" id="start">
+      <div class="eyebrow">Arbeitsrapporte einfacher erstellen</div>
+      <h1>Willkommen beim Rapport Generator</h1>
+      <p>Erstelle aus Outlook- oder CalDAV-Terminen kundenbezogene PDF-Rapporte. Diese Hilfe führt dich von der Kalenderverbindung über die Abrechnung bis zum fertigen PDF.</p>
+      <div class="hero-actions">
+        <a class="button-link" href="#workflow">Zum Ablauf <span aria-hidden="true">→</span></a>
+        <a class="button-link secondary" href="#betreff">Terminformat ansehen</a>
+      </div>
+    </header>
+
+    <div class="intro-grid">
+      <section class="card" aria-labelledby="flow-title">
+        <h2 id="flow-title">Der Ablauf auf einen Blick</h2>
+        <p>Wähle zuerst den Zeitraum. Die App lädt danach die Termine und zeigt die daraus gefundenen Kunden.</p>
+        <div class="workflow" aria-label="Fünf Schritte zum Rapport">
+          <div class="workflow-step"><b>1</b><strong>Zeitraum</strong><span>Von, bis oder Schnellwahl</span></div>
+          <div class="workflow-step"><b>2</b><strong>Kunden</strong><span>Suchen und auswählen</span></div>
+          <div class="workflow-step"><b>3</b><strong>Optionen</strong><span>Ausrichtung festlegen</span></div>
+          <div class="workflow-step"><b>4</b><strong>Erstellen</strong><span>PDF-Berichte erzeugen</span></div>
+          <div class="workflow-step"><b>5</b><strong>Prüfen</strong><span>Vorschau, Druck, Ablage</span></div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="needs-title">
+        <h2 id="needs-title">Was du benötigst</h2>
+        <ul class="info-points">
+          <li><span class="check">✓</span><span>Windows und eine installierte Rapport-Generator-App</span></li>
+          <li><span class="check">✓</span><span>Outlook Desktop oder Zugangsdaten für einen CalDAV-Kalender</span></li>
+          <li><span class="check">✓</span><span>Ein eingerichteter Ausgabeordner mit Schreibzugriff</span></li>
+          <li><span class="check">✓</span><span>Passende Mitarbeiter- und Materialkürzel in den Einstellungen</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="doc-section" id="erste-schritte" data-searchable>
+      <div class="section-head"><span class="section-num">01</span><div><h2>Erste Schritte</h2><p>Beim ersten Start prüft die App, ob die wichtigsten Grundeinstellungen vorhanden sind.</p></div></div>
+      <ol class="steps-list">
+        <li><div><strong>App öffnen</strong><p>Starte den Rapport Generator über das Startmenü oder die Desktop-Verknüpfung.</p></div></li>
+        <li><div><strong>Fehlende Grundeinstellungen ergänzen</strong><p>Falls nötig, öffnet sich das Fenster „Einstellungen“. Lege mindestens einen Rapport-Speicherort, ein Dateinamenmuster und die Trennzeichen für Terminbetreffzeilen fest.</p></div></li>
+        <li><div><strong>Kalenderquelle wählen</strong><p>Verwende Outlook Desktop oder richte eine CalDAV-Verbindung ein. Details stehen im Abschnitt <a href="#kalender">Kalender verbinden</a>.</p></div></li>
+        <li><div><strong>Mitarbeiter und Materialien einrichten</strong><p>Die Kürzel aus den Kalenderbetreffzeilen müssen in der Mitarbeiter- oder Materialliste vorhanden sein. Hinterlege auch die passenden Ansätze und Einheiten.</p></div></li>
+      </ol>
+      <div class="callout"><strong>Vorhandene Einstellungen:</strong> Beim ersten Start übernimmt die App vorhandene Konfigurationen, wenn sie an einem früheren Speicherort liegen. Einstellungen können ausserdem über die Exportdatei wiederhergestellt werden.</div>
+    </section>
+
+    <section class="doc-section" id="kalender" data-searchable>
+      <div class="section-head"><span class="section-num">02</span><div><h2>Kalender verbinden</h2><p>Die Kalenderquelle wird im Einstellungsfenster unter „Allgemein → Kalender“ ausgewählt.</p></div></div>
+      <div class="cols">
+        <div class="mini-card"><h3>Outlook</h3><p>Wähle „Outlook“, wenn Microsoft Outlook Desktop installiert und mit dem gewünschten Profil eingerichtet ist. Die App liest die Termine aus dem Outlook-Kalender des angemeldeten Profils.</p><p>Wenn keine Termine geladen werden, öffne Outlook zunächst selbst und prüfe, ob der Kalender erreichbar ist.</p></div>
+        <div class="mini-card"><h3>CalDAV</h3><p>Wähle „CalDAV“ und trage Kalender-URL, Benutzername sowie Passwort oder App-Passwort ein. Das Kennwort wird im Betriebssystem-Schlüsselspeicher abgelegt und nicht in der Einstellungsdatei gespeichert.</p><p>Für Hostpoint Cloud Office und Infomaniak gibt es Anbieter-Presets und Schaltflächen, die die jeweiligen Anleitungen öffnen.</p></div>
+      </div>
+      <h3>Hostpoint Cloud Office</h3>
+      <ol>
+        <li>Als Kalenderquelle „CalDAV“ auswählen und als Anbieter-Preset „Hostpoint Cloud Office“ einstellen.</li>
+        <li>Die Kalender-ID in den Eigenschaften des Kalenders nachsehen und in das Feld „Kalender-ID“ eintragen.</li>
+        <li>Die Cloud-Office-E-Mail-Adresse als Benutzernamen verwenden und das zugehörige Passwort eintragen.</li>
+        <li>Die App setzt die CalDAV-Adresse aus der Kalender-ID zusammen. Prüfe die angezeigte URL, bevor du speicherst.</li>
+      </ol>
+      <h3>Infomaniak Calendar</h3>
+      <ol>
+        <li>„Infomaniak Calendar“ als Anbieter-Preset auswählen.</li>
+        <li>Mit „Infomaniak Assistent öffnen“ die Infomaniak-Anleitung im Browser aufrufen.</li>
+        <li>Die dort angezeigte CalDAV-Adresse, den Benutzernamen und das App-Passwort in die App übernehmen.</li>
+      </ol>
+      <div class="callout warning"><strong>Wichtig:</strong> Der Browserassistent überträgt keine Anmeldung automatisch in die App. OAuth-only Kalenderdienste, die keine Passwort- oder App-Passwort-Anmeldung anbieten, benötigen eine eigene Integration und sind mit der allgemeinen CalDAV-Verbindung nicht direkt verbunden.</div>
+    </section>
+
+    <section class="doc-section" id="workflow" data-searchable>
+      <div class="section-head"><span class="section-num">03</span><div><h2>Rapporte erstellen</h2><p>Die nummerierten Kacheln links im Hauptfenster zeigen den aktuellen Arbeitsschritt.</p></div></div>
+      <h3>Schritt 1 · Zeitraum wählen</h3>
+      <p>Gib das Datum „Von“ und „Bis“ im Format TT.MM.JJJJ ein. Alternativ setzt du das Ende vom Startdatum ausgehend mit <strong>+30 Tage</strong>, <strong>+60 Tage</strong> oder <strong>+90 Tage</strong>. Die Schnellwahl berechnet das Enddatum inklusive der angegebenen Anzahl Tage.</p>
+      <p>Mit <strong>Weiter</strong> startet der Kalenderabruf. Die Kundenliste wird danach automatisch mit den passenden Einträgen befüllt.</p>
+      <h3>Schritt 2 · Kunden auswählen</h3>
+      <p>Während des Ladens zeigt ein Spinner den Fortschritt. Sobald die Einträge eingelesen wurden, kannst du einen oder mehrere Kunden wählen. Details zur Suche und Tastaturbedienung findest du unter <a href="#kunden">Kunden auswählen</a>.</p>
+      <h3>Schritt 3 · Rapport definieren</h3>
+      <p>Lege fest, ob Tätigkeiten und Material nach Tagen aufgeführt werden sollen. Wähle die Ausrichtung Hochformat oder Querformat. „Vorschlag“ übernimmt die von der App anhand der Rapportdaten vorgeschlagene Ausrichtung.</p>
+      <h3>Schritt 4 · Rapport erstellen</h3>
+      <p>Wähle <strong>Ausgewählte erstellen</strong>. Für jeden ausgewählten Kunden wird ein eigener PDF-Bericht erzeugt. Mit <strong>Output-Ordner öffnen</strong> gelangst du zum eingestellten Zielordner.</p>
+      <h3>Tastaturbedienung</h3>
+      <div class="keyboard">
+        <strong>Schritt 1</strong><span>Tab-Reihenfolge: Von → Bis → +30 → +60 → +90 → Weiter. Umschalt+Tab geht rückwärts. Enter auf „Weiter“ startet den Kalenderabruf.</span>
+        <strong>Schritt 2</strong><span>Enter im Filter bringt den Fokus in die Kundenliste. Pfeil hoch/runter bewegt den aktiven Eintrag; Enter wählt ihn aus oder ab. Tab führt bei vorhandener Auswahl zu „Weiter“.</span>
+        <strong>Schritt 3</strong><span>Der Fokus beginnt auf „Weiter“. Tab wechselt zu Tätigkeiten, Vertikal, Horizontal und Vorschlag. Enter aktiviert fokussierte Schaltflächen.</span>
+      </div>
+      <p>Ein klarer blauer Marker zeigt die aktive Schaltfläche oder Kundenliste. Ausgewählte Kunden sind blau markiert.</p>
+    </section>
+
+    <section class="doc-section" id="kunden" data-searchable>
+      <div class="section-head"><span class="section-num">04</span><div><h2>Kunden suchen und auswählen</h2><p>Die Kunden entstehen aus den Kundennamen der Kalenderbetreffzeilen im gewählten Zeitraum.</p></div></div>
+      <h3>Volltextsuche</h3>
+      <p>Gib im Feld „Kundensuche“ einen beliebigen Teil des Namens ein. Die Suche findet den Text auch mitten im Namen und unterscheidet nicht zwischen Gross- und Kleinschreibung. Mit <strong>Filter leeren</strong> wird die vollständige Liste wieder angezeigt.</p>
+      <h3>Einträge markieren</h3>
+      <p>Klicke einen Kundeneintrag an, um ihn auszuwählen. Für mehrere Rapporte können mehrere Kunden gleichzeitig markiert werden. Mit <strong>Alle auswählen</strong> markierst du alle aktuell angezeigten Kunden, mit <strong>Auswahl aufheben</strong> entfernst du die Markierungen.</p>
+      <div class="callout success"><strong>Visuelle Orientierung:</strong> Ausgewählte Kunden erscheinen blau. Wenn die Liste den Tastaturfokus hat, zeigt eine blaue Linie an der linken Seite den aktiven Listenbereich.</div>
+    </section>
+
+    <section class="doc-section" id="betreff" data-searchable>
+      <div class="section-head"><span class="section-num">05</span><div><h2>Terminbetreff verstehen</h2><p>Der Betreff eines Kalendertermins enthält Kunde, Arbeit und optional Abrechnungspositionen.</p></div></div>
+      <p>Das Standardformat lautet:</p>
+      <div class="subject-demo"><span class="customer">&lt;Kunde&gt;</span> -- <span class="work">&lt;Arbeit&gt;</span> //<span>&lt;Kürzel&gt;:&lt;Menge&gt;</span>[:<span class="detail">&lt;Detail&gt;</span>]//<span>&lt;Kürzel&gt;:&lt;Menge&gt;</span></div>
+      <p>Beispiel:</p>
+      <div class="subject-demo"><span class="customer">Muster AG</span> -- <span class="work">Fenster montieren</span> //<span>RG:2:</span><span class="detail">Montage</span>//<span>TH:1.5</span>//<span class="material">Auto:32</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Angabe</th><th>Bedeutung</th><th>Wird verwendet für</th></tr></thead><tbody>
+        <tr><td><code>Muster AG</code></td><td>Kundenname vor dem ersten Trenner</td><td>Zuordnung zum Kundenrapport</td></tr>
+        <tr><td><code>Fenster montieren</code></td><td>Arbeit zwischen den Trennzeichen</td><td>Termin- und Tätigkeitsbeschreibung</td></tr>
+        <tr><td><code>RG:2:Montage</code></td><td>Kürzel RG, Menge 2, Detail Montage</td><td>2 Stunden für den Mitarbeiter mit Kürzel RG</td></tr>
+        <tr><td><code>TH:1.5</code></td><td>Kürzel TH, Menge 1,5</td><td>1,5 Einheiten für die passende Kostenstelle</td></tr>
+        <tr><td><code>Auto:32</code></td><td>Kürzel Auto, Menge 32</td><td>32 Einheiten Material oder Kostenstelle</td></tr>
+      </tbody></table></div>
+      <h3>Mehrere Positionen</h3>
+      <p>Jede weitere Position beginnt mit dem Mitarbeiter-/Material-Trennzeichen. Dezimalwerte können mit Punkt oder Komma geschrieben werden. Kürzel müssen in den Einstellungen vorhanden sein und mit dem Termin übereinstimmen.</p>
+      <h3>Beschreibungen für Tagesübersichten</h3>
+      <p>Der dritte Teil einer Position ist optional und enthält eine nähere Beschreibung. Sobald mindestens eine Position eine Beschreibung hat, kann der Rapport die Tätigkeiten und Materialien nach Tagen aufführen. Gleiche Kürzel und Einheiten am selben Tag werden zusammengefasst; Beschreibungen werden zusammengeführt.</p>
+      <h3>Termine ohne Mengenposition</h3>
+      <p>Enthält ein Betreff keine Mitarbeiter-/Materialposition, kann die tatsächliche Termindauer dem Standardmitarbeiter zugerechnet werden. Dieser wird in den Rapporteinstellungen festgelegt. Wenn kein Standardmitarbeiter gewählt ist, verwendet die App den ersten passenden Eintrag aus der eingerichteten Liste.</p>
+      <div class="callout warning"><strong>Trennzeichen nicht erkannt?</strong> Vergleiche den Betreff mit den Feldern unter „Einstellungen → Allgemein → Betreff“. Die App verwendet die dort hinterlegten Trennzeichen; abweichende Zeichen können Kunde, Arbeit oder Mengen falsch zuordnen.</div>
+    </section>
+
+    <section class="doc-section" id="abrechnung" data-searchable>
+      <div class="section-head"><span class="section-num">06</span><div><h2>Berechnung und PDF-Ausgabe</h2><p>Die App summiert pro Kunde Mengen je Kürzel und berechnet daraus die Kosten.</p></div></div>
+      <div class="subject-demo">Gesamtkosten = Summe der Menge × hinterlegter Ansatz</div>
+      <p>Ein Mitarbeiterkürzel verweist auf Name, Stundensatz und Währung. Material- und weitere Kostenstellen haben ebenfalls einen Ansatz, eine Währung und eine Einheit wie <code>h</code>, <code>Stk.</code> oder <code>km</code>. Positionen mit einer Gesamtmenge von null erscheinen nicht in der Zusammenfassung.</p>
+      <h3>PDF-Vorschau</h3>
+      <ul>
+        <li>Nach dem Erstellen erscheint für jeden Rapport eine Vorschau.</li>
+        <li>Die Seiten passen sich der verfügbaren Fensterbreite an.</li>
+        <li>Mit Mausrad oder den Bildlaufleisten kannst du durch die Seiten navigieren.</li>
+        <li><strong>PDF drucken</strong> öffnet die Datei im zugeordneten PDF-Programm. Falls Windows kein PDF-Programm zugeordnet hat, installiere oder wähle einen PDF-Reader und versuche es erneut.</li>
+        <li>Die fertigen PDF-Dateien bleiben zusätzlich im konfigurierten Ausgabeordner liegen.</li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="einstellungen" data-searchable>
+      <div class="section-head"><span class="section-num">07</span><div><h2>Einstellungen</h2><p>Öffne das Einstellungsfenster über das Zahnrad oben links im Hauptfenster.</p></div></div>
+      <p>Änderungen mit <strong>Speichern</strong> übernehmen. Nicht gespeicherte Änderungen können beim Schliessen verworfen werden.</p>
+      <h3>Allgemein</h3>
+      <div class="cols">
+        <div class="mini-card"><h4>Datei</h4><p>Lege Rapport-Speicherort, Dateinamenmuster und Datumsformat fest. Das Namensmuster kann die Platzhalter <code>{kunde}</code>, <code>{objekt}</code>, <code>{datum}</code> und <code>{zeitraum}</code> enthalten. Eine Beispielzeile zeigt das Ergebnis.</p></div>
+        <div class="mini-card"><h4>Betreff</h4><p>Lege Trennzeichen für Kunde/Arbeit, Mitarbeiter/Material und Leistungsdetails fest. Eine Beispielzeile hilft zu prüfen, ob das erwartete Format erkannt wird.</p></div>
+        <div class="mini-card"><h4>Fenster/Updates</h4><p>Stelle die Startgrösse des Hauptfensters ein. Wähle den Modus PROD oder DEBUG und aktiviere oder deaktiviere die automatische Updateprüfung beim Start.</p></div>
+        <div class="mini-card"><h4>Kalender</h4><p>Wähle Outlook oder CalDAV. Für CalDAV findest du hier Anbieter-Presets, URL, Kalender-ID, Benutzername und Passwort-/App-Passwort-Feld.</p></div>
+      </div>
+      <h3>Mitarbeiter</h3>
+      <p>Füge Mitarbeitende hinzu, bearbeite oder lösche sie und ändere die Reihenfolge. Pro Eintrag werden Name, Kürzel, Stundensatz und Währung gespeichert. Das Kürzel muss im Kalenderbetreff genau so verwendet werden. Wenn im Betreff keine Mitarbeiterposition vorhanden ist, kann hier ein Standardmitarbeiter gewählt werden.</p>
+      <h3>Material</h3>
+      <p>Materialien und weitere Kostenstellen werden mit Name, Kürzel, Ansatz, Währung und Einheit verwaltet. Einträge können hinzugefügt, bearbeitet, gelöscht und sortiert werden.</p>
+      <h3>Rapporteinstellungen</h3>
+      <div class="table-wrap"><table><thead><tr><th>Bereich</th><th>Was du anpassen kannst</th></tr></thead><tbody>
+        <tr><td>Kopfzeile</td><td>Linker, mittlerer und rechter Text, Schriftgrösse, Logo-Datei, Position und Breite</td></tr>
+        <tr><td>Felder</td><td>Bezeichnungen und Werte für Titel, Kunde, Objekt und Berichtsperiode sowie Reihenfolge im Rapportkopf</td></tr>
+        <tr><td>Tabellen</td><td>Reihenfolge der Spalten in Detailtabelle, Tagesübersicht und Zusammenfassung</td></tr>
+        <tr><td>Fusszeile</td><td>Schriftgrösse, linke/rechte Inhalte und Seitenanzeige mit <code>{page}</code> und <code>{total}</code></td></tr>
+        <tr><td>Layout</td><td>Standardmässige Tagesübersicht sowie Hoch- oder Querformat</td></tr>
+      </tbody></table></div>
+      <p>In Texten für die Berichtsperiode kannst du <code>{startdatum}</code> und <code>{enddatum}</code> verwenden. Das Logo kann als PNG, JPG oder SVG hinterlegt werden.</p>
+    </section>
+
+    <section class="doc-section" id="sichern" data-searchable>
+      <div class="section-head"><span class="section-num">08</span><div><h2>Einstellungen exportieren, importieren und sichern</h2><p>Konfiguration und PDF-Layout lassen sich gemeinsam übertragen.</p></div></div>
+      <div class="cols">
+        <div class="mini-card"><h3>Exportieren</h3><ol><li>Im Einstellungsfenster auf „Einstellungen exportieren“ klicken.</li><li>Zielordner und Dateiname wählen.</li><li>Die Exportdatei sicher ablegen oder auf das neue Gerät übertragen.</li></ol></div>
+        <div class="mini-card"><h3>Importieren</h3><ol><li>„Einstellungen importieren“ wählen und die Exportdatei öffnen.</li><li>Bestätigen, dass die gespeicherten Einstellungen ersetzt werden dürfen.</li><li>Nach dem Import das Fenster schliessen und erneut öffnen.</li></ol></div>
+      </div>
+      <p>Ein verwendetes Logo wird im Paket mitgesichert. Das CalDAV-Passwort ist nicht enthalten und muss auf dem Zielgerät erneut eingegeben werden.</p>
+      <h3>Deinstallation</h3>
+      <p>Der Windows-Uninstaller fragt, ob die Einstellungen vor dem Entfernen in den Downloads-Ordner gesichert werden sollen. Die Sicherung wird in einem datierten Unterordner abgelegt. Bereits erzeugte Rapporte im Ausgabeordner werden nicht gelöscht.</p>
+      <div class="callout warning"><strong>CalDAV-Zugang:</strong> Das Passwort wird aus Sicherheitsgründen nicht in die Sicherungsdatei exportiert. Halte das Passwort oder App-Passwort bereit, wenn du die Verbindung später wieder einrichtest.</div>
+    </section>
+
+    <section class="doc-section" id="updates" data-searchable>
+      <div class="section-head"><span class="section-num">09</span><div><h2>Updates</h2><p>Die App kann beim Start automatisch prüfen und lässt eine manuelle Prüfung jederzeit zu.</p></div></div>
+      <ul>
+        <li>Wenn die automatische Prüfung aktiviert ist, sucht die App beim Start nach einer stabilen Version.</li>
+        <li>Ist beim Start kein Update verfügbar, wird keine Meldung angezeigt.</li>
+        <li>Über <strong>Nach Updates suchen</strong> startest du eine manuelle Prüfung. Wenn es kein Update gibt, meldet die App das Ergebnis.</li>
+        <li>Ein Update wird erst nach deiner Zustimmung heruntergeladen.</li>
+        <li>Unter Windows wird der vollständige Installer in den Downloads-Ordner geladen. Schliess die App und starte den Installer, um zu aktualisieren.</li>
+      </ul>
+      <p>Die automatische Prüfung kannst du in „Einstellungen → Allgemein → Fenster/Updates“ ausschalten. Die manuelle Prüfung bleibt über die Schaltfläche im Hauptfenster verfügbar.</p>
+    </section>
+
+    <section class="doc-section" id="protokoll" data-searchable>
+      <div class="section-head"><span class="section-num">10</span><div><h2>Protokoll und Debug-Modus</h2><p>Das Protokoll zeigt Verarbeitungsschritte und hilfreiche Details, wenn ein Kalendertermin oder PDF nicht verarbeitet werden konnte.</p></div></div>
+      <h3>Protokoll anzeigen</h3>
+      <p>Über <strong>Protokoll anzeigen</strong> blendest du das Protokollfenster ein oder aus. Dort findest du geladene Termine, gefundene Kunden, erzeugte Dateien und Fehlerhinweise. Bei einem Verarbeitungsfehler werden, soweit verfügbar, Kunde, Zeitraum und betroffene Betreffzeilen ergänzt.</p>
+      <h3>PROD und DEBUG</h3>
+      <div class="cols">
+        <div class="mini-card"><h4>PROD</h4><p>Normaler Anwendungsbetrieb. Fehlerdetails werden weiterhin in der Protokolldatei abgelegt, damit CalDAV- und PDF-Probleme nachvollzogen werden können.</p></div>
+        <div class="mini-card"><h4>DEBUG</h4><p>Zusätzliche Debugmeldungen erscheinen im Terminal. Bei der Rapporterstellung kann die App die Kalendertermine der ausgewählten Kunden als ICS-Datei exportieren.</p></div>
+      </div>
+      <p>Den Betriebsmodus findest du im Einstellungsfenster unter „Allgemein → Fenster/Updates“.</p>
+    </section>
+
+    <section class="doc-section" id="probleme" data-searchable>
+      <div class="section-head"><span class="section-num">11</span><div><h2>Fehlerbehebung</h2><p>Prüfe zuerst Zeitraum, Kalenderverbindung und Kürzel. Das Protokoll enthält zusätzliche Hinweise.</p></div></div>
+      <details><summary>Es werden keine Termine geladen</summary><ul><li>Prüfe, ob der Start vor oder am Enddatum liegt.</li><li>Bei Outlook: starte Outlook Desktop und öffne den gewünschten Kalender.</li><li>Bei CalDAV: prüfe URL, Benutzername und Passwort/App-Passwort in den Einstellungen.</li><li>Für manche Dienste muss ein App-Passwort statt des normalen Kontopassworts verwendet werden.</li></ul></details>
+      <details><summary>Es werden keine Kunden gefunden</summary><ul><li>Prüfe, ob im gewählten Zeitraum Termine vorhanden sind.</li><li>Der Kundenteil muss vor dem Kunde/Arbeit-Trennzeichen stehen.</li><li>Prüfe, ob das konfigurierte Trennzeichen mit dem Betreff übereinstimmt.</li><li>Leere die Kundensuche, damit nicht versehentlich alle Einträge herausgefiltert werden.</li></ul></details>
+      <details><summary>Ein Kunde fehlt oder es wird kein PDF erstellt</summary><ul><li>Prüfe, ob der Kundenname im Betreff korrekt geschrieben ist.</li><li>Prüfe, ob Mitarbeiter- und Materialkürzel in den Einstellungen angelegt sind und genau mit dem Betreff übereinstimmen.</li><li>Prüfe, ob Mengen numerisch sind und der Ansatz grösser als null ist.</li><li>Suche im Protokoll nach dem Kunden und den betroffenen Terminen.</li></ul></details>
+      <details><summary>CalDAV schlägt fehl</summary><ul><li>Prüfe die URL auf HTTPS und darauf, dass sie direkt zum Kalender führt.</li><li>Prüfe Benutzername und Passwort/App-Passwort.</li><li>Falls das Passwortfeld leer ist, kann ein bereits gespeichertes Passwort weiterverwendet werden. Zum Ändern das neue Passwort eintragen.</li><li>Zusätzliche Ursache und Verarbeitungsschritt stehen im Protokoll.</li></ul></details>
+      <details><summary>PDF-Druck kann nicht gestartet werden</summary><ul><li>Prüfe, ob Windows ein PDF-Programm zugeordnet hat.</li><li>Öffne die PDF bei Bedarf im Ausgabeordner und wähle einen installierten PDF-Reader.</li><li>Wenn eine Meldung sagt, dass keine Anwendung zugeordnet ist, installiere oder wähle eine PDF-Anwendung als Standard.</li></ul></details>
+      <details><summary>Das importierte CalDAV-Konto verbindet sich nicht</summary><p>Das CalDAV-Passwort wird nicht exportiert. Trage das Passwort oder App-Passwort des Kontos nach dem Import erneut in den Kalendereinstellungen ein und speichere die Einstellungen.</p></details>
+      <div class="callout"><strong>Für die Fehlersuche:</strong> Notiere die Version der App, den gewählten Zeitraum, die Kalenderquelle und die genaue Meldung aus dem Protokoll. Passwörter und andere vertrauliche Zugangsdaten nicht weitergeben.</div>
+    </section>
+
+    <div class="footer"><span>Rapport Generator · Bedienhilfe</span><a href="#start">Zurück nach oben ↑</a></div>
+  </main>
+</div>
+<script>
+  (() => {
+    const search = document.getElementById("help-search");
+    const nav = document.getElementById("help-nav");
+    const links = [...nav.querySelectorAll("a")];
+    const sections = [...document.querySelectorAll("main .doc-section")];
+    const noResults = document.getElementById("no-results");
+
+    search.addEventListener("input", () => {
+      const query = search.value.trim().toLocaleLowerCase("de");
+      let matches = 0;
+      links.forEach((link) => {
+        const section = document.querySelector(link.getAttribute("href"));
+        const show = !query || (section && section.textContent.toLocaleLowerCase("de").includes(query));
+        link.classList.toggle("hidden", !show);
+        if (show) matches++;
+      });
+      sections.forEach((section) => {
+        const show = !query || section.textContent.toLocaleLowerCase("de").includes(query);
+        section.classList.toggle("hidden", !show);
+      });
+      noResults.style.display = matches ? "none" : "block";
+    });
+
+    links.forEach((link) => link.addEventListener("click", () => {
+      links.forEach((item) => item.classList.remove("active"));
+      link.classList.add("active");
+    }));
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          links.forEach((link) => link.classList.toggle("active", link.hash === `#${entry.target.id}`));
+        });
+      }, { rootMargin: "-18% 0px -70% 0px" });
+      sections.forEach((section) => observer.observe(section));
+    }
+  })();
+</script>
+</body>
+</html>
