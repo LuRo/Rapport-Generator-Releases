@@ -7,6 +7,9 @@ Der Rapport Generator erstellt kundenbezogene Arbeitsrapporte als PDF aus Termin
 [**Aktuellen Windows-Installer herunterladen**](https://github.com/LuRo/Rapport-Generator-Releases/releases/latest/download/RapportGeneratorSetup.exe)  
 [Alle verfügbaren Releases ansehen](https://github.com/LuRo/Rapport-Generator-Releases/releases)
 
+## Hilfe
+Über diese Seite kann man die Seite direkt anzeigen lassen: https://luro.github.io/Rapport-Generator-Releases/HILFE.html#einstellungen
+
 ## Was die App kann
 
 - Termine aus einem frei wählbaren Zeitraum aus Outlook oder einem CalDAV-Kalender laden
