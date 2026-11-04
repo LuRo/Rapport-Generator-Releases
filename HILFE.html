@@ -343,6 +343,7 @@
         <li><strong>PDF drucken</strong> öffnet die Datei im zugeordneten PDF-Programm. Falls Windows kein PDF-Programm zugeordnet hat, installiere oder wähle einen PDF-Reader und versuche es erneut.</li>
         <li>Die fertigen PDF-Dateien bleiben zusätzlich im konfigurierten Ausgabeordner liegen.</li>
       </ul>
+      <p>Die Fusszeile enthält das Druckdatum sowie die Seitenanzeige. Tabellen verwenden graue Linien und hellgraue, fett gedruckte Kopfzeilen.</p>
     </section>
 
     <section class="doc-section" id="einstellungen" data-searchable>
@@ -357,14 +358,15 @@
       </div>
       <h3>Mitarbeiter</h3>
       <p>Füge Mitarbeitende hinzu, bearbeite oder lösche sie und ändere die Reihenfolge. Pro Eintrag werden Name, Kürzel, Stundensatz und Währung gespeichert. Das Kürzel muss im Kalenderbetreff genau so verwendet werden. Wenn im Betreff keine Mitarbeiterposition vorhanden ist, kann hier ein Standardmitarbeiter gewählt werden.</p>
+      <p>Mit <strong>Exportieren</strong> kannst du ausgewählte Mitarbeitende als PDF oder Excel-Datei (<code>.xlsx</code>) speichern. Markiere die gewünschten Einträge in der Auswahlliste, wähle das Format und anschliessend den Speicherort. Die Datei enthält Name, Kürzel, Stundensatz und Währung.</p>
       <h3>Material</h3>
-      <p>Materialien und weitere Kostenstellen werden mit Name, Kürzel, Ansatz, Währung und Einheit verwaltet. Einträge können hinzugefügt, bearbeitet, gelöscht und sortiert werden.</p>
+      <p>Materialien und weitere Kostenstellen werden mit Name, Kürzel, Ansatz, Währung und Einheit verwaltet. Einträge können hinzugefügt, bearbeitet, gelöscht und sortiert werden. Über <strong>Exportieren</strong> speicherst du ausgewählte Einträge als PDF oder Excel-Datei (<code>.xlsx</code>). Wähle die Einträge, das Format und den Speicherort; exportiert werden Name, Kürzel, Ansatz, Währung und Einheit.</p>
       <h3>Rapporteinstellungen</h3>
       <div class="table-wrap"><table><thead><tr><th>Bereich</th><th>Was du anpassen kannst</th></tr></thead><tbody>
         <tr><td>Kopfzeile</td><td>Linker, mittlerer und rechter Text, Schriftgrösse, Logo-Datei, Position und Breite</td></tr>
         <tr><td>Felder</td><td>Bezeichnungen und Werte für Titel, Kunde, Objekt und Berichtsperiode sowie Reihenfolge im Rapportkopf</td></tr>
         <tr><td>Tabellen</td><td>Reihenfolge der Spalten in Detailtabelle, Tagesübersicht und Zusammenfassung</td></tr>
-        <tr><td>Fusszeile</td><td>Schriftgrösse, linke/rechte Inhalte und Seitenanzeige mit <code>{page}</code> und <code>{total}</code></td></tr>
+        <tr><td>Fusszeile</td><td>Schriftgrösse, linke/rechte Inhalte, Druckdatum und Seitenanzeige mit <code>{page}</code> und <code>{total}</code></td></tr>
         <tr><td>Layout</td><td>Standardmässige Tagesübersicht sowie Hoch- oder Querformat</td></tr>
       </tbody></table></div>
       <p>In Texten für die Berichtsperiode kannst du <code>{startdatum}</code> und <code>{enddatum}</code> verwenden. Das Logo kann als PNG, JPG oder SVG hinterlegt werden.</p>
