@@ -8,7 +8,7 @@ Der Rapport Generator erstellt kundenbezogene Arbeitsrapporte als PDF aus Termin
 [Alle verfügbaren Releases ansehen](https://github.com/LuRo/Rapport-Generator-Releases/releases)
 
 ## Hilfe
-Über diese Seite kann man die Seite direkt anzeigen lassen: https://luro.github.io/Rapport-Generator-Releases/HILFE.html#einstellungen
+Über diese Seite kann man die Seite direkt anzeigen lassen: https://luro.github.io/Rapport-Generator-Releases/HILFE.html
 
 ## Was die App kann
 
